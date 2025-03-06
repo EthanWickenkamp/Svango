@@ -1,0 +1,70 @@
+services:
+  db:
+    #set name of docker container
+    container_name: mysql_db
+    #specify location of path context and dockerfile
+    build: 
+      context: ./db
+      dockerfile: config/Dockerfile
+    #resilience if crashes 
+    restart: always
+        
+    env_file:
+     - ./db/config/.env.db
+    volumes:
+    - mysql_vol:/var/lib/mysql
+    - ./db-init-scripts:/docker-entrypoint-initdb.d
+
+    ports:
+     - "3306:3306"
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  backend:
+    container_name: django_backend
+    build: 
+      context: ./backend
+      dockerfile: config/Dockerfile
+
+    env_file:
+     - ./backend/config/.env.backend
+    volumes:
+     - ./backend:/app
+
+    ports:
+     - "8000:8000"
+
+    working_dir: /app
+
+    depends_on:
+      db:
+        condition: service_healthy
+
+    command: bash config/ss.sh
+
+  frontend:
+    container_name: svelte_frontend
+    build:
+      context: ./frontend
+      dockerfile: config/Dockerfile
+
+    env_file:
+     - ./frontend/config/.env.frontend
+    volumes: 
+     - ./frontend:/app
+    
+    ports:
+     - "5173:5173"
+
+    working_dir: /app
+
+    command: bash config/ss.sh
+
+
+volumes: 
+  mysql_vol:

@@ -1,0 +1,16 @@
+# Exclude version control metadata
+.git
+.gitignore
+
+# Exclude Python artifacts
+__pycache__
+*.py[cod]
+*$py.class
+
+# Exclude Node modules and build artifacts
+node_modules
+dist
+build
+
+# Exclude environment files
+.env*
