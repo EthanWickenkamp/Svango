@@ -7,8 +7,8 @@ echo "Making Django migrations..."
 python manage.py makemigrations
 python manage.py migrate
 
-echo "Collecting static files..."
-python manage.py collectstatic --noinput
+# echo "Collecting static files..."
+# python manage.py collectstatic --noinput
 
 # echo "creating superuser..."
 # python manage.py createsuperuser --no-input || echo "superuser already exists"
