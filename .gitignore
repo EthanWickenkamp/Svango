@@ -1,2 +1,12 @@
+#Environment variables
 .env*
 
+#Svelte related ignores
+node_modules/
+.svelte-kit/
+dist/
+
+# Django Python related ignores
+*.pyc
+*.pyo
+__pycache__/

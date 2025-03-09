@@ -6,18 +6,23 @@ services:
     build: 
       context: ./db
       dockerfile: config/Dockerfile
-    #resilience if crashes 
+    #resilience for crashes 
     restart: always
         
-    env_file:
-     - ./db/config/.env.db
+    #mount database static files and init scripts
     volumes:
     - mysql_vol:/var/lib/mysql
     - ./db-init-scripts:/docker-entrypoint-initdb.d
 
+    #containers environment variables
+    env_file:
+     - ./db/config/.env.db
+
+    #ports mapped host:container
     ports:
      - "3306:3306"
 
+    #healthcheck
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
@@ -26,25 +31,34 @@ services:
 
 
   backend:
+    #set name of docker container
     container_name: django_backend
+    #specify location of path context and dockerfile
     build: 
       context: ./backend
       dockerfile: config/Dockerfile
 
-    env_file:
-     - ./backend/config/.env.backend
+    #mount local root directory to workspace folder
     volumes:
      - ./backend:/app
 
+    #containers environment variables
+    env_file:
+     - ./backend/config/.env.backend
+
+    #ports mapped host:container
     ports:
      - "8000:8000"
 
+    #set working directory in container
     working_dir: /app
 
+    #wait for status of db health check
     depends_on:
       db:
         condition: service_healthy
 
+    #run start script
     command: bash config/ss.sh
 
   frontend:
@@ -53,18 +67,24 @@ services:
       context: ./frontend
       dockerfile: config/Dockerfile
 
-    env_file:
-     - ./frontend/config/.env.frontend
+    #mount local root directory to workspace folder
     volumes: 
      - ./frontend:/app
-    
+
+    #containers environment variables
+    env_file:
+     - ./frontend/config/.env.frontend
+
+    #ports mapped host:container
     ports:
      - "5173:5173"
 
+    #set working directory in container
     working_dir: /app
 
+    #run start script
     command: bash config/ss.sh
 
-
+#create a docker volume to store database static files
 volumes: 
   mysql_vol:

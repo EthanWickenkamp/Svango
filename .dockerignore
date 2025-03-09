@@ -12,5 +12,3 @@ node_modules
 dist
 build
 
-# Exclude environment files
-.env*
