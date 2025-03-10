@@ -1,13 +1,4 @@
-# Exclude Node modules and build artifacts
-node_modules
-.svelte-kit
-package-lock.json
-.npm
-.cache
-.turbo
-dist
-build
-.git
-.gitignore
-.vscode
+# keep container free of these host files
+**/node_modules
 *.log
+package-lock.json

@@ -70,7 +70,7 @@ services:
     #mount local root directory to workspace folder
     volumes: 
      - ./frontend:/app
-     #- node_modules:/app/myapp/node_modules
+  
 
     #containers environment variables
     env_file:
@@ -89,4 +89,3 @@ services:
 #create a docker volume to store database static files
 volumes: 
   mysql_vol:
-  #node_modules:

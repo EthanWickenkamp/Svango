@@ -2,7 +2,7 @@
 
 set -e
 
-cd /app/myapp
+cd /myapp
 
 # Remove existing package-lock and node_modules to force a fresh install
 rm -f package-lock.json
