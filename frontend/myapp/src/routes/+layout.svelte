@@ -27,6 +27,7 @@
       <!-- Links relative to the /baseball root -->
       <li><a href="/">Home</a></li>
       <li><a href="/items">Items</a></li>
+      <li><a href="/itemedit">Edit</a></li>
     </ul>
   </nav>
   
