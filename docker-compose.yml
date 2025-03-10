@@ -12,7 +12,7 @@ services:
     #mount database static files and init scripts
     volumes:
     - mysql_vol:/var/lib/mysql
-    - ./db-init-scripts:/docker-entrypoint-initdb.d
+    - ./db/db-init-scripts:/docker-entrypoint-initdb.d
 
     #containers environment variables
     env_file:
@@ -70,6 +70,7 @@ services:
     #mount local root directory to workspace folder
     volumes: 
      - ./frontend:/app
+     #- node_modules:/app/myapp/node_modules
 
     #containers environment variables
     env_file:
@@ -88,3 +89,4 @@ services:
 #create a docker volume to store database static files
 volumes: 
   mysql_vol:
+  #node_modules:

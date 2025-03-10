@@ -4,10 +4,9 @@ set -e
 
 cd /app/myapp
 
-echo "Cleaning up unwanted folders..."
-# Remove any problematic folders
-rm -rf /.svelte-kit
-rm -rf /node_modules
+# Remove existing package-lock and node_modules to force a fresh install
+rm -f package-lock.json
+rm -rf node_modules
 
 echo "Installing dependencies..."
 npm install
