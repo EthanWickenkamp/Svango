@@ -1,5 +1,7 @@
 #Environment variables
 .env*
+*.log
+.vscode/
 
 #Svelte related ignores
 node_modules/

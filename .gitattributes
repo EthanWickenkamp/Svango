@@ -1,3 +1,5 @@
+#set end of line to lf for unix not windows crlf
+#keeps it consistent for all pulls and working in unix container
 * text=auto eol=lf
 *.sh text eol=lf
-#set end of line to lf for unix not windows
+

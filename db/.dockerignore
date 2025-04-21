@@ -1,0 +1,8 @@
+# Environment
+.env*
+
+# Logs
+*.log
+
+# Config (optional — only if you're generating .cnf files or don't want them baked in)
+# *.cnf

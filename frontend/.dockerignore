@@ -1,4 +1,14 @@
-# keep container free of these host files
-**/node_modules
+# keeps host build files out of container, rebuild on start
+# Node artifacts
+node_modules/
+
+# Build output
+.svelte-kit/
+dist/
+
+# Logs and environment
 *.log
+.env*
+
+# Optional: Lockfile (only ignore if you want nondeterministic builds)
 package-lock.json

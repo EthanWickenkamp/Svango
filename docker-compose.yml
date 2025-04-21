@@ -1,8 +1,7 @@
 services:
   db:
-    #set name of docker container
     container_name: mysql_db
-    #specify location of path context and dockerfile
+    #specify location of dockerfile and path context of container
     build: 
       context: ./db
       dockerfile: config/Dockerfile
@@ -14,7 +13,7 @@ services:
     - mysql_vol:/var/lib/mysql
     - ./db/db-init-scripts:/docker-entrypoint-initdb.d
 
-    #containers environment variables
+    #containers environment variables injected on build
     env_file:
      - ./db/config/.env.db
 
@@ -31,16 +30,16 @@ services:
 
 
   backend:
-    #set name of docker container
     container_name: django_backend
-    #specify location of path context and dockerfile
+    #specify location of dockerfile and path context of container
     build: 
       context: ./backend
       dockerfile: config/Dockerfile
 
     #mount local root directory to workspace folder
-    volumes:
-     - ./backend:/app
+    #bad for production and not clean using COPY . . in dockerfile instead
+    #volumes:
+     #- ./backend:/app
 
     #containers environment variables
     env_file:
@@ -68,9 +67,8 @@ services:
       dockerfile: config/Dockerfile
 
     #mount local root directory to workspace folder
-    volumes: 
-     - ./frontend:/app
-  
+    #volumes: 
+     #- ./frontend:/app
 
     #containers environment variables
     env_file:
@@ -86,6 +84,6 @@ services:
     #run start script
     command: bash config/ss.sh
 
-#create a docker volume to store database static files
+#create a docker volume to store database static files, mounted above
 volumes: 
   mysql_vol:
