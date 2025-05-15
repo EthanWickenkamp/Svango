@@ -1,6 +1,7 @@
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ fetch }) => { //typescript type checking as PageLoad only done here
+  const accessToken = localStorage.getItem('accessToken');
   // Define the API endpoints for each model.
   const endpoints = [
     '/api/items/',
@@ -9,7 +10,14 @@ export const load: PageLoad = async ({ fetch }) => { //typescript type checking 
 
   // Fetch all endpoints concurrently with promise all
   const responses = await Promise.all(
-    endpoints.map(endpoint => fetch(endpoint))
+    endpoints.map(endpoint => 
+      fetch(endpoint, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      })
+    )
   );
 
   // Check each response for errors.

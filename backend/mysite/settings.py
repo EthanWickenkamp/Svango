@@ -19,13 +19,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # Provide a fallback for development; make sure to override in production!
-SECRET_KEY = os.environ.get['SECRET_KEY']
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get['DEBUG'].lower() in ('true', '1', 't')
+DEBUG = os.environ.get('DEBUG').lower() in ('true', '1', 't')
 
 # In Docker, you might pass ALLOWED_HOSTS as a comma-separated list.
-ALLOWED_HOSTS = os.environ.get['ALLOWED_HOSTS'].split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
 
 # Application definition
 
@@ -85,11 +85,11 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get['DB_NAME'],
-        'USER': os.environ.get['DB_USER'],
-        'PASSWORD': os.environ.get['DB_PASSWORD'],
-        'HOST': os.environ.get['DB_HOST'],
-        'PORT': os.environ.get['DB_PORT'],
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
     }
 }
 
@@ -125,9 +125,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS configuration change to actual production frontend domain
-CORS_ALLOWED_ORIGINS = [
-    os.environ['CORS_ALLOWED_ORIGINS'].split(',')
-]
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS').split(',')
 # REST Framework configuration
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [ #tag any public api endpoints

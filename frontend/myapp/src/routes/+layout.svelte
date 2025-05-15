@@ -24,10 +24,11 @@
   
   <nav>
     <ul>
-      <!-- Links relative to the /baseball root -->
+      <!-- Links relative to the / root -->
       <li><a href="/">Home</a></li>
       <li><a href="/items">Items</a></li>
       <li><a href="/itemedit">Edit</a></li>
+      <li><a href="/login">Login</a></li>
     </ul>
   </nav>
   
