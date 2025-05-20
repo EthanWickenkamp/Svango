@@ -24,7 +24,7 @@ export const login = async (username, password) => {
     token.set(data.access);
     localStorage.setItem('refresh_token', data.refresh);
     
-    // Fetch user profile after successful login
+    // Fetch user profile after successful login, its own view in django
     await fetchUserProfile();
     return true;
     

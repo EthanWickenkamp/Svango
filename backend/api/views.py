@@ -16,27 +16,8 @@ from .serializers import ItemSerializer
 def hello_world(request):
     return Response({"message": "Hello, API is working!"})
 
-# @api_view(['POST'])
-# @permission_classes([AllowAny])
-# def login(request):
-#     username = request.data.get('username')
-#     password = request.data.get('password')
 
-#     if not username or not password:
-#         return Response({"detail": "Username and password are required"}, status=status.HTTP_400_BAD_REQUEST)
-
-#     user = authenticate(username=username, password=password)
-
-#     if user is not None:
-#         refresh = RefreshToken.for_user(user)
-#         return Response({
-#             "access": str(refresh.access_token),
-#             "refresh": str(refresh)
-#         })
-#     else:
-#         return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
-
-
+#not sure if this is used in frontend yet but returns user profile information
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user_profile(request):

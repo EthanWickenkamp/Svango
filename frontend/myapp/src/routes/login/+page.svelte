@@ -11,7 +11,7 @@
 
     const success = await login(username, password);
     if (success) {
-      goto('/'); // or wherever your protected content lives
+      goto('/'); //send to home page on login
     } else {
       error = 'Invalid username or password';
     }
@@ -28,7 +28,7 @@
 
   <div>
     <label for="password">Password</label>
-    <input id="password" type="password" bind:value={password} required />
+    <input id="password" bind:value={password} required />
   </div>
 
   {#if error}

@@ -1,3 +1,4 @@
+// same as item/+page.ts is this loading same as .svelte page?
 import type { PageLoad } from './$types';
 import { authenticatedFetch } from '$lib/auth/authservice';
 

@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
-
+// browser important to localstorage, ssr issue?
 const storedToken = browser ? localStorage.getItem('access_token') : null;
 const storedUser = browser ? JSON.parse(localStorage.getItem('user') || 'null') : null;
 
