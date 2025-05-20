@@ -1,15 +1,39 @@
 <script lang="ts">
-    import { login } from '$lib/stores/auth';
-    let username = '';
-    let password = '';
+  import { login } from '$lib/auth/authservice';
+  import { goto } from '$app/navigation';
 
-    async function handleLogin() {
-        await login(username, password);
+  let username = '';
+  let password = '';
+  let error = '';
+
+  async function handleLogin(event: Event) {
+    event.preventDefault();
+
+    const success = await login(username, password);
+    if (success) {
+      goto('/'); // or wherever your protected content lives
+    } else {
+      error = 'Invalid username or password';
     }
+  }
 </script>
 
-<div>
-    <input type="text" bind:value={username} placeholder="Username" />
-    <input type="password" bind:value={password} placeholder="Password" />
-    <button on:click={handleLogin}>Login</button>
-</div>
+<h1>Login</h1>
+
+<form on:submit={handleLogin}>
+  <div>
+    <label for="username">Username</label>
+    <input id="username" bind:value={username} required />
+  </div>
+
+  <div>
+    <label for="password">Password</label>
+    <input id="password" type="password" bind:value={password} required />
+  </div>
+
+  {#if error}
+    <p style="color: red;">{error}</p>
+  {/if}
+
+  <button type="submit">Login</button>
+</form>

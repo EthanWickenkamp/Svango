@@ -1,37 +1,20 @@
 import type { PageLoad } from './$types';
+import { authenticatedFetch } from '$lib/auth/authservice';
 
-export const load: PageLoad = async ({ fetch }) => { //typescript type checking as PageLoad only done here
-  const accessToken = localStorage.getItem('accessToken');
-  // Define the API endpoints for each model.
-  const endpoints = [
-    '/api/items/',
+export const ssr = false;
 
-  ];
+export const load: PageLoad = async () => {
+  try {
+    const response = await authenticatedFetch('/api/items/');
 
-  // Fetch all endpoints concurrently with promise all
-  const responses = await Promise.all(
-    endpoints.map(endpoint => 
-      fetch(endpoint, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`,
-        },
-      })
-    )
-  );
-
-  // Check each response for errors.
-  responses.forEach((res, index) => {
-    if (!res.ok) {
-      throw new Error(`Failed to fetch data from ${endpoints[index]}`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch items: ${response.status}`);
     }
-  });
 
-  // Parse the JSON from each response.
-  const [items] = await Promise.all(
-    responses.map(res => res.json())
-  );
-  //add to [items] array all other fields
-  // Return as data prop so it's available in your Svelte component.
-  return { items };
+    const items = await response.json();
+    return { items };
+  } catch (err) {
+    console.error("Item fetch failed:", err);
+    return { items: [] };
+  }
 };

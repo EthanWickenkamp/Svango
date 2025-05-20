@@ -1,5 +1,5 @@
 <script lang="ts">
-	// The data prop is injected from your load function.
+	import { authenticatedFetch } from '$lib/auth/authservice';
 	export let data;
 
 	type Item = {
@@ -8,15 +8,12 @@
 		description: string;
 	};
 
-	// Start with the items loaded from the API.
-    // making local copies to edit and then send
 	let items: Item[] = data.items;
 	let newItem = { name: '', description: '' };
 	let editItem: Item | null = null;
 
-	// Re-fetch items from the API.
 	async function fetchItems() {
-		const res = await fetch('/api/items/');
+		const res = await authenticatedFetch('/api/items/');
 		if (res.ok) {
 			items = await res.json();
 		} else {
@@ -24,9 +21,8 @@
 		}
 	}
 
-	// Create a new item via the API.
 	async function addItem() {
-		const res = await fetch('/api/items/', {
+		const res = await authenticatedFetch('/api/items/', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(newItem)
@@ -39,11 +35,10 @@
 		}
 	}
 
-	// Delete an item via the API.
 	async function deleteItem(id: number) {
-		const res = await fetch(`/api/items/${id}/`, { 
-            method: 'DELETE' 
-        });
+		const res = await authenticatedFetch(`/api/items/${id}/`, {
+			method: 'DELETE'
+		});
 		if (res.ok) {
 			fetchItems();
 		} else {
@@ -51,15 +46,13 @@
 		}
 	}
 
-	// Start editing an item (creates a copy so changes are not applied immediately).
 	function startEdit(item: Item) {
 		editItem = { ...item };
 	}
 
-	// Update an item via the API.
 	async function updateItem() {
 		if (!editItem) return;
-		const res = await fetch(`/api/items/${editItem.id}/`, {
+		const res = await authenticatedFetch(`/api/items/${editItem.id}/`, {
 			method: 'PUT',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({
