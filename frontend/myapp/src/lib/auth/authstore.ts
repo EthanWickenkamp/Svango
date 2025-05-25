@@ -1,30 +1,11 @@
-import { writable } from 'svelte/store';
-import { browser } from '$app/environment';
-// browser important to localstorage, ssr issue?
-const storedToken = browser ? localStorage.getItem('access_token') : null;
-const storedUser = browser ? JSON.parse(localStorage.getItem('user') || 'null') : null;
+import { writable, derived } from 'svelte/store';
 
-export const token = writable<string | null>(storedToken);
-export const user = writable(storedUser);
-export const isAuthenticated = writable(!!storedToken);
+export type User = {
+	id: number;
+	username: string;
+	email: string;
+};
 
-if (browser) {
-  // Sync changes to localStorage
-  token.subscribe(value => {
-    if (value) {
-      localStorage.setItem('access_token', value);
-      isAuthenticated.set(true);
-    } else {
-      localStorage.removeItem('access_token');
-      isAuthenticated.set(false);
-    }
-  });
-
-  user.subscribe(value => {
-    if (value) {
-      localStorage.setItem('user', JSON.stringify(value));
-    } else {
-      localStorage.removeItem('user');
-    }
-  });
-}
+export const token = writable<string | null>(null);
+export const user = writable<User | null>(null);
+export const isAuthenticated = derived(token, ($token) => !!$token);

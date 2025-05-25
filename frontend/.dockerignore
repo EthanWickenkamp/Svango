@@ -1,17 +1,14 @@
 # keeps host build files out of container, rebuild on start
 # Node artifacts
-node_modules/
+myapp/node_modules/
 
 # Build output
-.svelte-kit/
-dist/
+myapp/.svelte-kit/
+myapp/build/
 
 # Logs and environment
 *.log
-.env*
-
-# Optional: Lockfile (only ignore if you want nondeterministic builds)
-#package-lock.json
+**/.env*
 
 # Docs
 myapp/README.md

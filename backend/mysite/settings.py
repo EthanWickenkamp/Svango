@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'api', #our app 
     'rest_framework',
     'rest_framework_simplejwt',
-    #'rest_framework_simpltjtw.token_blacklist',
     'corsheaders',
 
     
@@ -102,13 +101,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 
@@ -119,15 +114,16 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # Default primary key field type
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#anything I added is below
 
 # CORS configuration change to actual production frontend domain
 CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS').split(',')
 # REST Framework configuration
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [ #tag any public api endpoints
-        #'rest_framework.permissions.AllowAny',
+    'DEFAULT_PERMISSION_CLASSES': [ #tag any public api endpoints as AllowAny
+        #'rest_framework.permissions.AllowAny', #switch comment to disable auth
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [ #using JWT
@@ -135,9 +131,7 @@ REST_FRAMEWORK = {
     ],
 }
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
     'SIGNING_KEY': os.environ.get('SIGNING_KEY', SECRET_KEY), #fallback django secret key
-    'AUTH_HEADER_TYPES': ('Bearer',), #check these or research
-    'ALGORITHM': 'HS256',
+    'AUTH_HEADER_TYPES': ('Bearer',),
 }

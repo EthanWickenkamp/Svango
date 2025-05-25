@@ -1,160 +1,78 @@
-// src/auth/authService.js
-import { token, user, isAuthenticated } from './authstore';
+import { token, user } from './authstore';
 import { get } from 'svelte/store';
 
-/**
- * Login user and store JWT tokens
- */
-export const login = async (username, password) => {
-  try {
-    const response = await fetch('/api/token/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    });
-    
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.detail || 'Login failed');
-    }
-    
-    const data = await response.json();
-    
-    // Store tokens
-    token.set(data.access);
-    localStorage.setItem('refresh_token', data.refresh);
-    
-    // Fetch user profile after successful login, its own view in django
-    await fetchUserProfile();
-    return true;
-    
-  } catch (error) {
-    console.error('Login error:', error);
-    return false;
-  }
+type TokenResponse = {
+	access: string;
 };
 
-/**
- * Fetch the user's profile data
- */
-export const fetchUserProfile = async () => {
-  try {
-    const response = await authenticatedFetch('/api/user/profile/');
-    
-    if (!response.ok) {
-      throw new Error('Failed to fetch user profile');
-    }
-    
-    const userData = await response.json();
-    user.set(userData);
-    return userData;
-    
-  } catch (error) {
-    console.error('Profile fetch error:', error);
-    return null;
-  }
+type UserResponse = {
+	id: number;
+	username: string;
+	email: string;
 };
 
-/**
- * Make authenticated API requests with the JWT token
- */
-export const authenticatedFetch = async (url, options = {}) => {
-  // Get current token from store
-  const accessToken = get(token);
-  
-  if (!accessToken) {
-    // Try to refresh if no access token is available
-    const refreshSuccess = await refreshToken();
-    if (!refreshSuccess) {
-      throw new Error('Authentication required');
-    }
-  }
-  
-  // Set up headers with the token
-  const headers = {
-    ...options.headers || {},
-    'Authorization': `Bearer ${get(token)}`
-  };
-  
-  // Make the request
-  const response = await fetch(url, { 
-    ...options, 
-    headers 
-  });
-  
-  // If unauthorized, try to refresh the token and retry
-  if (response.status === 401) {
-    const refreshSuccess = await refreshToken();
-    
-    if (refreshSuccess) {
-      // Update headers with new token and retry request
-      headers.Authorization = `Bearer ${get(token)}`;
-      return fetch(url, { ...options, headers });
-    } else {
-      // If refresh fails, clear auth state
-      logout();
-      throw new Error('Session expired. Please login again.');
-    }
-  }
-  
-  return response;
-};
+export async function login(username: string, password: string): Promise<boolean> {
+	try {
+		const res = await fetch('/api/token/', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ username, password })
+		});
 
-/**
- * Refresh the access token using the refresh token
- */
-export const refreshToken = async () => {
-  try {
-    const refreshToken = localStorage.getItem('refresh_token');
-    
-    if (!refreshToken) {
-      return false;
-    }
-    
-    const response = await fetch('/api/token/refresh/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ refresh: refreshToken })
-    });
-    
-    if (!response.ok) {
-      throw new Error('Token refresh failed');
-    }
-    
-    const data = await response.json();
-    token.set(data.access);
-    
-    // Some implementations also refresh the refresh token
-    if (data.refresh) {
-      localStorage.setItem('refresh_token', data.refresh);
-    }
-    
-    return true;
-    
-  } catch (error) {
-    console.error('Token refresh error:', error);
-    return false;
-  }
-};
+		if (!res.ok) throw new Error('Login failed');
+		const data: TokenResponse = await res.json(); //assumes res.json matches TokenResponse
 
-/**
- * Log out user by clearing tokens and state
- */
-export const logout = () => {
-  token.set(null);
-  user.set(null);
-  localStorage.removeItem('refresh_token');
-};
+		token.set(data.access);
+    if (!data.access) throw new Error("Malformed token response");
+		await fetchUserProfile();
 
-/**
- * Check if the current session is valid
- */
-export const checkAuth = async () => {
-  // If we have a token but no user, fetch the user profile
-  if (get(token) && !get(user)) {
-    return await fetchUserProfile() !== null;
-  }
-  
-  // If we have both token and user, consider authenticated
-  return !!get(token) && !!get(user);
-};
+		return true;
+	} catch (error) {
+		console.error('Login error:', error);
+		logout();
+		return false;
+	}
+}
+
+export async function fetchUserProfile(): Promise<UserResponse | null> {
+	try {
+		const res = await fetch('/api/user-profile/', {
+			headers: { Authorization: `Bearer ${get(token)}` } //announce bearer token and use get to update token store value
+		});
+
+		if (!res.ok) throw new Error('Failed to fetch user profile');
+
+		const userData: UserResponse = await res.json();
+		user.set(userData);
+		return userData;
+	} catch (error) {
+		console.error('User fetch error:', error);
+		user.set(null);
+		return null;
+	}
+}
+
+export async function logout(): Promise<void> {
+	token.set(null);
+	user.set(null);
+}
+
+export async function authenticatedFetch(
+	url: string,
+	options: RequestInit = {}
+): Promise<Response> {
+	const accessToken = get(token);
+	if (!accessToken) {
+		throw new Error('No access token available');
+	}
+
+	const headers = {
+		...options.headers,
+		Authorization: `Bearer ${accessToken}`
+	};
+
+	return fetch(url, {
+		...options,
+		headers
+	});
+}

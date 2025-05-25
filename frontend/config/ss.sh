@@ -18,3 +18,4 @@ npx vite --force  # Triggers Vite to rebuild deps
 
 echo "Starting Svelte development server..."
 exec npm run dev -- --host
+#exec npm run build

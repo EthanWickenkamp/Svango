@@ -1,6 +1,5 @@
 django
 mysqlclient
-cryptography
 djangorestframework
 django-cors-headers
-djangorestframework-simplejwt
+djangorestframework-simplejwt[crypto]
