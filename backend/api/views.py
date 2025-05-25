@@ -1,10 +1,8 @@
-from django.shortcuts import render
-from django.contrib.auth import authenticate
+
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 
-from rest_framework import status
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import status #for sending status codes as a response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from rest_framework import viewsets
@@ -13,8 +11,9 @@ from .serializers import ItemSerializer
 
 # Create your views here.
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def hello_world(request):
-    return Response({"message": "Hello, API is working!"})
+    return Response({"message": "Hello, API is working! :<"})
 
 
 #not sure if this is used in frontend yet but returns user profile information

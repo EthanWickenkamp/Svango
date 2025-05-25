@@ -38,8 +38,8 @@ services:
 
     #mount local root directory to workspace folder
     #bad for production and not clean using COPY . . in dockerfile instead
-    #volumes:
-     #- ./backend:/app
+    volumes:
+     - ./backend:/app
 
     #containers environment variables
     env_file:
@@ -67,8 +67,8 @@ services:
       dockerfile: config/Dockerfile
 
     #mount local root directory to workspace folder
-    #volumes: 
-     #- ./frontend:/app
+    volumes: 
+     - ./frontend:/app
 
     #containers environment variables
     env_file:

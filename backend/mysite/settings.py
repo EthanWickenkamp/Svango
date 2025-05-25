@@ -36,9 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'api',
-
+    'api', #our app 
     'rest_framework',
     'rest_framework_simplejwt',
     #'rest_framework_simpltjtw.token_blacklist',
@@ -139,6 +137,7 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    # 'SIGNING_KEY': #defaulted to djangos secret key rn
-    # ...other settings...
+    'SIGNING_KEY': os.environ.get('SIGNING_KEY', SECRET_KEY), #fallback django secret key
+    'AUTH_HEADER_TYPES': ('Bearer',), #check these or research
+    'ALGORITHM': 'HS256',
 }

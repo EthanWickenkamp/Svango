@@ -7,7 +7,7 @@ export default defineConfig({
         host: '0.0.0.0', // Allows access from Docker and other network interfaces
         port: 5173,      // Default SvelteKit dev server port
 		watch: {
-			usePolling: true, // Necessary for file change detection in Docker
+			usePolling: false, // Necessary for file change detection in Docker
 		},
         proxy: {
             '/api': {
@@ -17,7 +17,5 @@ export default defineConfig({
             },
         },
     },
-
-
 
 });

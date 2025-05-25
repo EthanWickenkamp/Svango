@@ -11,4 +11,7 @@ dist/
 .env*
 
 # Optional: Lockfile (only ignore if you want nondeterministic builds)
-package-lock.json
+#package-lock.json
+
+# Docs
+myapp/README.md
