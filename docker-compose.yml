@@ -38,7 +38,8 @@ services:
 
     #mount local root directory to workspace folder
     #bad for production and not clean overrides COPY . . in dockerfile
-    #volumes:
+    volumes:
+    - ./backend/api/migrations:/app/api/migrations
      #- ./backend:/app
 
     #containers environment variables
