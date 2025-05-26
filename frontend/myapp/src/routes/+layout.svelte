@@ -64,6 +64,7 @@
       <li><a href="/">Home</a></li>
       <li><a href="/items">Items</a></li>
       <li><a href="/itemedit">Edit</a></li>
+      <li><a href="/groups">Groups</a></li>
     </ul>
   </div>
 

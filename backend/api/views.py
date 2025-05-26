@@ -10,8 +10,8 @@ from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import AccessToken
 
 from rest_framework import viewsets
-from .models import Item
-from .serializers import ItemSerializer
+from .models import Item, ItemGroup
+from .serializers import ItemSerializer, ItemGroupSerializer
 
 # Create your views here.
 @api_view(["GET"])
@@ -48,3 +48,16 @@ def user_profile(request):
 class ItemViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
+    def get_queryset(self):
+        queryset = Item.objects.all()
+        group_param = self.request.query_params.get('group')
+        if group_param == "null":
+            return queryset.filter(group__isnull=True)
+        elif group_param is not None:
+            return queryset.filter(group=group_param)
+        return queryset 
+
+
+class ItemGroupViewSet(viewsets.ModelViewSet):
+    queryset = ItemGroup.objects.all()
+    serializer_class = ItemGroupSerializer
