@@ -21,8 +21,7 @@ const config = {
 		
 		// CSRF Protection - Production ready
 		csrf: {
-			checkOrigin: true,  // Always check origin in production
-			allowedOrigins: buildAllowedOrigins()
+			checkOrigin: process.env.NODE_ENV === 'production', // Always check origin in production
 		}
 	}
 };
