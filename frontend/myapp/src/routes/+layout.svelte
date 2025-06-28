@@ -1,62 +1,19 @@
 <script lang="ts">
-  import { isAuthenticated, user } from '$lib/auth/authstore';
-  import { logout } from '$lib/auth/authservice';
+	import { onMount } from 'svelte';
+	import { fetchUserProfile, logout } from '$lib/auth/authservice';
 
-  const handleLogout = () => {
-    logout();
-    window.location.href = '/login'; // optional redirect
-  };
+	let username: string | null = null;
+
+	onMount(async () => {
+		const user = await fetchUserProfile();
+		username = user?.username ?? null;
+	});
+
+	async function handleLogout() {
+		await logout();
+		window.location.href = '/login';
+	}
 </script>
-
-<style>
-  nav {
-    background: #469717;
-    padding: 1rem;
-    border-bottom: 2px solid #5f5fc5dd;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .nav-left,
-  .nav-right {
-    display: flex;
-    align-items: center;
-  }
-
-  ul {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  li {
-    margin-right: 1rem;
-  }
-
-  a {
-    text-decoration: none;
-    color: #333;
-  }
-
-  .nav-right span {
-    color: #fff;
-    margin-right: 1rem;
-  }
-
-  button {
-    background: none;
-    border: none;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-  }
-
-  button:hover {
-    text-decoration: underline;
-  }
-</style>
 
 <nav>
   <div class="nav-left">
@@ -69,8 +26,8 @@
   </div>
 
   <div class="nav-right">
-    {#if $isAuthenticated}
-      <span>Welcome, {$user?.username}</span>
+    {#if username}
+      <span>Welcome, {username}</span>
       <button on:click={handleLogout}>Logout</button>
     {:else}
       <a href="/login">Login</a>
@@ -79,3 +36,30 @@
 </nav>
 
 <slot />
+
+<style>
+  nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: #f4f4f4;
+  }
+
+  .nav-left ul {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    padding: 0;
+    margin: 0;
+  }
+
+  .nav-left li {
+    display: inline;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+</style>
