@@ -80,7 +80,6 @@
 </script>
 
 
-{#if $isAuthenticated}
     <h1>Group Management</h1>
 
     <!-- Groups -->
@@ -128,9 +127,6 @@
         {/each}
     </ul>
     </div>
-{:else}
-	<h1>You are not logged in</h1>
-{/if}
 
 <style>
   .group-container {

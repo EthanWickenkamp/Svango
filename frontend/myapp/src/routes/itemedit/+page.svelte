@@ -70,7 +70,6 @@
 	}
 </script>
 
-{#if $isAuthenticated}
 	<h1>Item List</h1>
 
 	{#if items.length > 0}
@@ -103,7 +102,5 @@
 			<button type="button" on:click={() => (editItem = null)}>Cancel</button>
 		</form>
 	{/if}
-{:else}
-	<h1>You are not logged in</h1>
-{/if}
+
 
