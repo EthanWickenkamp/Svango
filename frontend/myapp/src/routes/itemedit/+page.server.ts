@@ -1,16 +1,10 @@
-// routes/itemedit/+page.server.ts   (identical content in routes/groups/)
+import { authenticatedFetch } from '$lib/server/auth';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ cookies, fetch }) => {
-	const token = cookies.get('access_token');            // JWT from HTTP-only cookie
-	if (!token) {
-		return { items: [] };             // unauthenticated – return empty list
-	}
+export const load: PageServerLoad = async (event) => {
+	const res = await authenticatedFetch('/api/items/', event);
 
-	const res = await fetch('http://backend:8000/api/items/', {
-		headers: { Authorization: `Bearer ${token}` }
-	});
-
-	const items = res.ok ? await res.json() : [];
-	return { items };
+	return {
+		items: res.ok ? await res.json() : []
+	};
 };
