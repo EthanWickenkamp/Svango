@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from datetime import timedelta
+from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -124,6 +125,9 @@ SECURE_BROWSER_XSS_FILTER = True
 
 # CORS configuration change to actual production frontend domain
 CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS').split(',')
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    "authorization",
+]
 # REST Framework configuration
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [ #tag any public api endpoints as AllowAny
