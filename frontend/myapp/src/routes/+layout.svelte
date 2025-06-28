@@ -1,6 +1,14 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { user } from '$lib/stores/user'; // adjust path if needed
+
 	/*  receive the user from +layout.server.ts  */
 	export let data: { user: { username: string } | null };
+
+	// Make user globally available
+	onMount(() => {
+		user.set(data.user);
+	});
 
 	const username = data.user?.username ?? null;
 
@@ -9,6 +17,7 @@
 		window.location.href = '/';     // back to home
 	}
 </script>
+
 
 <nav>
 	<!--  UNCHANGED: your original list of links  -->
