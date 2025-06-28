@@ -8,7 +8,7 @@ myapp/build/
 
 # Logs and environment
 *.log
-**/.env*
+#**/.env*
 
 # Docs
 myapp/README.md
