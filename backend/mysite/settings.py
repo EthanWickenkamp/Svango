@@ -122,6 +122,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Security headers django should only be accessible over lan
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
 
 # CORS configuration change to actual production frontend domain
 CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS').split(',')
