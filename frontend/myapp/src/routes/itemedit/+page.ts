@@ -1,21 +1,16 @@
-// same as item/+page.ts is this loading same as .svelte page?
-import type { PageLoad } from './$types';
-import { authenticatedFetch } from '$lib/auth/authservice';
+// routes/itemedit/+page.server.ts   (identical content in routes/groups/)
+import type { PageServerLoad } from './$types';
 
-export const ssr = false;
+export const load: PageServerLoad = async ({ cookies, fetch }) => {
+	const token = cookies.get('access_token');            // JWT from HTTP-only cookie
+	if (!token) {
+		return { items: [] };             // unauthenticated – return empty list
+	}
 
-export const load: PageLoad = async () => {
-  try {
-    const response = await authenticatedFetch('/api/items/');
+	const res = await fetch('http://backend:8000/api/items/', {
+		headers: { Authorization: `Bearer ${token}` }
+	});
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch items: ${response.status}`);
-    }
-
-    const items = await response.json();
-    return { items };
-  } catch (err) {
-    console.error("Item fetch failed:", err);
-    return { items: [] };
-  }
+	const items = res.ok ? await res.json() : [];
+	return { items };
 };

@@ -29,3 +29,10 @@ export async function logout(): Promise<void> {
 		credentials: 'include'
 	});
 }
+
+export async function authenticatedFetch(
+	url: string,
+	options: RequestInit = {}
+): Promise<Response> {
+	return fetch(url, { ...options, credentials: 'include' });
+}

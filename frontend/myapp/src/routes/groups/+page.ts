@@ -1,23 +1,24 @@
-// src/routes/items/+page.ts
-import type { PageLoad } from './$types';
-import { authenticatedFetch } from '$lib/auth/authservice';
+// src/routes/items/+page.server.ts
+import type { PageServerLoad } from './$types';
 
-export const ssr = false;
+export const load: PageServerLoad = async ({ cookies, fetch }) => {
+	const token = cookies.get('access_token');
+	if (!token) {
+		return { groups: [], ungrouped: [] };          // not logged in
+	}
 
-export const load: PageLoad = async () => {
-  try {
-    const groupRes = await authenticatedFetch('/api/groups/');
-    const ungroupedRes = await authenticatedFetch('/api/items/?group=null');
+	// Call Django directly from the server, attaching the JWT
+	const [groupRes, ungroupedRes] = await Promise.all([
+		fetch('http://backend:8000/api/groups/', {
+			headers: { Authorization: `Bearer ${token}` }
+		}),
+		fetch('http://backend:8000/api/items/?group=null', {
+			headers: { Authorization: `Bearer ${token}` }
+		})
+	]);
 
-    if (!groupRes.ok) throw new Error(`Failed to fetch groups: ${groupRes.status}`);
-    if (!ungroupedRes.ok) throw new Error(`Failed to fetch ungrouped: ${ungroupedRes.status}`);
+	const groups     = groupRes.ok     ? await groupRes.json()     : [];
+	const ungrouped  = ungroupedRes.ok ? await ungroupedRes.json() : [];
 
-    const groups = await groupRes.json();
-    const ungrouped = await ungroupedRes.json();
-
-    return { groups, ungrouped };
-  } catch (err) {
-    console.error("Data fetch failed:", err);
-    return { groups: [], ungrouped: [] };
-  }
+	return { groups, ungrouped };
 };
