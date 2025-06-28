@@ -1,5 +1,5 @@
 // svelte.config.js
-import adapter from '@sveltejs/adapter-auto';
+import adapter from '@sveltejs/adapter-node';  // Changed from adapter-auto
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 // Build allowed origins from ALLOWED_HOSTS (HTTPS only for production)
@@ -23,10 +23,7 @@ const config = {
 		csrf: {
 			checkOrigin: true,  // Always check origin in production
 			allowedOrigins: buildAllowedOrigins()
-		},
-		
-		// Trust proxy headers from nginx
-		trustProxy: true
+		}
 	}
 };
 

@@ -4,18 +4,18 @@ set -e #exit on error
 
 cd /app/myapp
 
-# Remove existing package-lock and node_modules to force a fresh install
-echo "Cleaning up old dependencies..."
+# Remove existing build artifacts to force a fresh build
+echo "Cleaning up old build..."
 rm -rf node_modules
 rm -rf .svelte-kit
+rm -rf build
 #rm -f package-lock.json
 
 echo "Installing dependencies..."
 npm install
 
-echo "force re-optimize"
-npx vite --force  # Triggers Vite to rebuild deps
+echo "Building for production..."
+npm run build
 
-echo "Starting Svelte development server..."
-#exec npm run dev -- --host
-exec npm run build
+echo "Starting production server..."
+exec node build
