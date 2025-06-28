@@ -1,18 +1,32 @@
+// svelte.config.js
 import adapter from '@sveltejs/adapter-auto';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
+// Build allowed origins from ALLOWED_HOSTS (HTTPS only for production)
+const buildAllowedOrigins = () => {
+	if (!process.env.ALLOWED_HOSTS) {
+		return [];
+	}
+	
+	const hosts = process.env.ALLOWED_HOSTS.split(',').map(h => h.trim());
+	return hosts.map(host => `https://${host}`);
+};
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	// Consult https://svelte.dev/docs/kit/integrations
-	// for more information about preprocessors
 	preprocess: [vitePreprocess()],
 
 	kit: {
-		// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
-		// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
-		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
-		adapter: adapter()
+		adapter: adapter(),
+		
+		// CSRF Protection - Production ready
+		csrf: {
+			checkOrigin: true,  // Always check origin in production
+			allowedOrigins: buildAllowedOrigins()
+		},
+		
+		// Trust proxy headers from nginx
+		trustProxy: true
 	}
 };
 

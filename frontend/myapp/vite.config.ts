@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
 			host: env.FRONTEND_HOST, // Allows access from Docker and other network interfaces
 			port: parseInt(env.FRONTEND_PORT), // Default SvelteKit dev server port
 			//allowedHosts: 'all', // Temporarily allow all hosts for testing
-			allowedHosts: env.VITE_ALLOWED_HOSTS ? env.VITE_ALLOWED_HOSTS.split(',') : [], // Allowed hosts for security
+			allowedHosts: env.ALLOWED_HOSTS ? env.ALLOWED_HOSTS.split(',') : [], // Allowed hosts for security
 			watch: {
 				usePolling: false, // Necessary for file change detection in Docker
 			},
