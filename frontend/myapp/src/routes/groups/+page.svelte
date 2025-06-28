@@ -91,3 +91,63 @@
           <li 
             draggable="true" 
             on:dragstart={(e) => handleDragStart(e, item)}
+          >
+            {item.name}
+          </li>
+        {/each}
+      </ul>
+    </div>
+  {/each}
+</div>
+
+<!-- Ungrouped Items -->
+<div 
+  class="ungrouped"
+  role="region"
+  on:dragover={allowDrop} 
+  on:drop={(e) => handleDrop(e, null)}
+>
+  <h2>Ungrouped</h2>
+  <ul>
+    {#each ungrouped as item (item.id)}
+      <li 
+        draggable="true" 
+        on:dragstart={(e) => handleDragStart(e, item)}
+      >
+        {item.name}
+      </li>
+    {/each}
+  </ul>
+</div>
+
+<style>
+  .group-container {
+    display: flex;
+    gap: 20px;
+  }
+
+  .group, .ungrouped {
+    border: 2px solid #333;
+    padding: 10px;
+    min-width: 200px;
+    background: #f4f4f4;
+  }
+
+  .group ul, .ungrouped ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-left: 0;
+    margin: 0;
+  }
+
+  li {
+    padding: 5px;
+    background: lightgray;
+    cursor: grab;
+    width: 100%;
+    max-width: 200px;
+    box-sizing: border-box;
+  }
+</style>
