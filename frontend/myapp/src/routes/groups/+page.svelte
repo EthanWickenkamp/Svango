@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { authenticatedFetch } from '$lib/client/auth';
+
   export let data: {
     groups: any[];
     ungrouped: any[];
@@ -41,7 +43,7 @@
     draggedItem = null;
 
     try {
-      const res = await fetch(`/api/items/${itemId}/`, {
+      const res = await authenticatedFetch(`/items/${itemId}/`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ group: groupId })
@@ -59,8 +61,8 @@
 
   async function refreshGroups() {
     try {
-      const groupRes = await fetch('/api/groups/');
-      const ungroupedRes = await fetch('/api/items/?group=null');
+      const groupRes = await authenticatedFetch('/groups/');
+      const ungroupedRes = await authenticatedFetch('/items/?group=null');
 
       if (!groupRes.ok) throw new Error("Failed to fetch groups");
       if (!ungroupedRes.ok) throw new Error("Failed to fetch ungrouped items");
@@ -75,83 +77,3 @@
     }
   }
 </script>
-
-<h1>Group Management</h1>
-
-<!-- Groups -->
-<div class="group-container">
-  {#each groups as group}
-    <div 
-      class="group"
-      on:dragover={allowDrop} 
-      on:drop={(e) => handleDrop(e, group.id)}
-      role="region"
-      aria-label="Drop area"
-    >
-      <h2>{group.name}</h2>
-      <ul>
-        {#each group.items as item (item.id)}
-          <li 
-            draggable="true" 
-            on:dragstart={(e) => handleDragStart(e, item)}
-          >
-            {item.name}
-          </li>
-        {/each}
-      </ul>
-    </div>
-  {/each}
-</div>
-
-<!-- Ungrouped Items -->
-<div 
-  class="ungrouped"
-  on:dragover={allowDrop} 
-  on:drop={(e) => handleDrop(e, null)}
-  role="region"
-  aria-label="Drop area"
->
-  <h2>Ungrouped</h2>
-  <ul>
-    {#each ungrouped as item (item.id)}
-      <li 
-        draggable="true" 
-        on:dragstart={(e) => handleDragStart(e, item)}
-      >
-        {item.name}
-      </li>
-    {/each}
-  </ul>
-</div>
-
-<style>
-  .group-container {
-    display: flex;
-    gap: 20px;
-  }
-
-  .group, .ungrouped {
-    border: 2px solid #333;
-    padding: 10px;
-    min-width: 200px;
-    background: #f4f4f4;
-  }
-
-  .group ul, .ungrouped ul {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding-left: 0;
-    margin: 0;
-  }
-
-  li {
-    padding: 5px;
-    background: lightgray;
-    cursor: grab;
-    width: 100%;
-    max-width: 200px;
-    box-sizing: border-box;
-  }
-</style>
