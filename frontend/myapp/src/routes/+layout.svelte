@@ -50,7 +50,7 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 1rem;
-		background-color: #f4f4f4;
+		background-color: #52a02d;
 	}
 
 	.nav-left ul {
