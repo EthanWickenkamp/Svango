@@ -9,7 +9,7 @@ type UserResponse = {
 // For client-side components that want to hydrate the user
 export async function fetchUserProfile(): Promise<UserResponse | null> {
 	try {
-		const res = await fetch('/api/user/', {
+		const res = await fetch('/api/user-profile/', {
 			credentials: 'include'
 		});
 		if (!res.ok) throw new Error('User fetch failed');
