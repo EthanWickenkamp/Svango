@@ -1,21 +1,25 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 
-export default defineConfig({
-	plugins: [sveltekit()],
-	server: {
-        host: '0.0.0.0', // Allows access from Docker and other network interfaces
-        port: 5173,      // Default SvelteKit dev server port
-		watch: {
-			usePolling: false, // Necessary for file change detection in Docker
+export default defineConfig(({ mode }) => {
+	const env = loadEnv(mode, process.cwd(), '');
+	
+	return {
+		plugins: [sveltekit()],
+		server: {
+			host: env.FRONTEND_HOST, // Allows access from Docker and other network interfaces
+			port: parseInt(env.FRONTEND_PORT), // Default SvelteKit dev server port
+			allowedHosts: env.VITE_ALLOWED_HOSTS.split(','), // Allowed hosts for security
+			watch: {
+				usePolling: false, // Necessary for file change detection in Docker
+			},
+			proxy: {
+				'/api': {
+					target: env.BACKEND_URL, // Django backend
+					changeOrigin: true, // Needed for proxying cross-origin requests
+					secure: false
+				},
+			},
 		},
-        proxy: {
-            '/api': {
-                target: 'http://backend:8000', // Django backend
-                changeOrigin: true,             // Needed for proxying cross-origin requests
-                secure: false
-            },
-        },
-    },
-
+	};
 });
