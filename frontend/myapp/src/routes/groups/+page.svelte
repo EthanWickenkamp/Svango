@@ -1,7 +1,4 @@
 <script lang="ts">
-    import { isAuthenticated } from '$lib/auth/authstore';
-    import { authenticatedFetch } from '$lib/auth/authservice';
-
   export let data: {
     groups: any[];
     ungrouped: any[];
@@ -44,7 +41,7 @@
     draggedItem = null;
 
     try {
-      const res = await authenticatedFetch(`/api/items/${itemId}/`, {
+      const res = await fetch(`/api/items/${itemId}/`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ group: groupId })
@@ -62,8 +59,8 @@
 
   async function refreshGroups() {
     try {
-      const groupRes = await authenticatedFetch('/api/groups/');
-      const ungroupedRes = await authenticatedFetch('/api/items/?group=null');
+      const groupRes = await fetch('/api/groups/');
+      const ungroupedRes = await fetch('/api/items/?group=null');
 
       if (!groupRes.ok) throw new Error("Failed to fetch groups");
       if (!ungroupedRes.ok) throw new Error("Failed to fetch ungrouped items");
@@ -79,54 +76,53 @@
   }
 </script>
 
+<h1>Group Management</h1>
 
-    <h1>Group Management</h1>
-
-    <!-- Groups -->
-    <div class="group-container">
-    {#each groups as group}
-        <div 
-        class="group"
-        on:dragover={allowDrop} 
-        on:drop={(e) => handleDrop(e, group.id)}
-        role="region"
-        aria-label="Drop area"
-        >
-        <h2>{group.name}</h2>
-        <ul>
-            {#each group.items as item (item.id)}
-            <li 
-                draggable="true" 
-                on:dragstart={(e) => handleDragStart(e, item)}
-            >
-                {item.name}
-            </li>
-            {/each}
-        </ul>
-        </div>
-    {/each}
-    </div>
-
-    <!-- Ungrouped Items -->
+<!-- Groups -->
+<div class="group-container">
+  {#each groups as group}
     <div 
-    class="ungrouped"
-    on:dragover={allowDrop} 
-    on:drop={(e) => handleDrop(e, null)}
-    role="region"
-    aria-label="Drop area"
+      class="group"
+      on:dragover={allowDrop} 
+      on:drop={(e) => handleDrop(e, group.id)}
+      role="region"
+      aria-label="Drop area"
     >
-    <h2>Ungrouped</h2>
-    <ul>
-        {#each ungrouped as item (item.id)}
-        <li 
+      <h2>{group.name}</h2>
+      <ul>
+        {#each group.items as item (item.id)}
+          <li 
             draggable="true" 
             on:dragstart={(e) => handleDragStart(e, item)}
-        >
+          >
             {item.name}
-        </li>
+          </li>
         {/each}
-    </ul>
+      </ul>
     </div>
+  {/each}
+</div>
+
+<!-- Ungrouped Items -->
+<div 
+  class="ungrouped"
+  on:dragover={allowDrop} 
+  on:drop={(e) => handleDrop(e, null)}
+  role="region"
+  aria-label="Drop area"
+>
+  <h2>Ungrouped</h2>
+  <ul>
+    {#each ungrouped as item (item.id)}
+      <li 
+        draggable="true" 
+        on:dragstart={(e) => handleDragStart(e, item)}
+      >
+        {item.name}
+      </li>
+    {/each}
+  </ul>
+</div>
 
 <style>
   .group-container {
@@ -145,7 +141,7 @@
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 10px; /* consistent spacing between items */
+    gap: 10px;
     padding-left: 0;
     margin: 0;
   }
@@ -159,4 +155,3 @@
     box-sizing: border-box;
   }
 </style>
-
