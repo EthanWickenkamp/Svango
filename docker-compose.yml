@@ -19,7 +19,7 @@ services:
 
     #ports mapped host:container
     ports:
-     - "3306:3306"
+     - "3306"
 
     #healthcheck
     healthcheck:
@@ -48,7 +48,7 @@ services:
 
     #ports mapped host:container
     ports:
-     - "8000:8000"
+     - "8000"
 
     #set working directory in container
     working_dir: /app
