@@ -2,7 +2,7 @@ import { env } from '$env/dynamic/private';
 import { redirect } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
 
-const BACKEND_URL = env.BACKEND_URL || 'http://backend:8000';
+const BACKEND_URL = env.BACKEND_URL;
 
 export async function authenticatedFetch(
     path: string,
