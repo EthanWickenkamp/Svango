@@ -1,4 +1,5 @@
 <script lang="ts">
+	export let data;
 </script>
 
 <h1>Welcome {data.user.username ?? 'to Svango template'}</h1>
