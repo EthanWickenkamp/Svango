@@ -1,5 +1,6 @@
-import { authenticatedFetch } from '$lib/server/auth';
+// src/routes/+layout.server.ts
 import type { LayoutServerLoad } from './$types';
+import { authenticatedFetch } from '$lib/auth/authenticatedFetch';
 
 export const load: LayoutServerLoad = async (event) => {
 	try {

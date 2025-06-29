@@ -1,6 +1,7 @@
 // src/routes/login/+page.server.ts
 import { redirect, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
+import { env } from '$env/static/private';
 
 export const load: PageServerLoad = async () => {
 	return {};
@@ -12,24 +13,32 @@ export const actions: Actions = {
 		const username = formData.get('username')?.toString() || '';
 		const password = formData.get('password')?.toString() || '';
 
-		const res = await fetch('http://backend:8000/api/token/', {
+		// Backend login endpoint
+		const res = await fetch(`${env.BACKEND_URL}/api/token/`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ username, password })
 		});
 
 		if (!res.ok) {
-			return fail(401, { error: 'Invalid username or password' });
+			return fail(401, {
+				error: 'Invalid username or password',
+				values: { username }
+			});
 		}
 
 		const data = await res.json();
+
+		// Set secure cookie
 		cookies.set('access_token', data.access, {
 			httpOnly: true,
 			path: '/',
-			sameSite: 'strict',
-			secure: false // set to true in production!
+			sameSite: 'lax',
+			secure: process.env.NODE_ENV === 'production',
+			maxAge: 60 * 60 // 1 hour
 		});
 
 		throw redirect(302, '/');
 	}
 };
+
