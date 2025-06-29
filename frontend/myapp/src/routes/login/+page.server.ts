@@ -1,7 +1,8 @@
 // src/routes/login/+page.server.ts
 import { redirect, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { env } from '$env/static/private';
+import { BACKEND_URL } from '$env/static/private';
+import { NODE_ENV } from '$env/static/private';
 
 export const load: PageServerLoad = async () => {
 	return {};
@@ -14,7 +15,7 @@ export const actions: Actions = {
 		const password = formData.get('password')?.toString() || '';
 
 		// Backend login endpoint
-		const res = await fetch(`${env.BACKEND_URL}/api/token/`, {
+		const res = await fetch(`${BACKEND_URL}/api/token/`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ username, password })
@@ -34,7 +35,7 @@ export const actions: Actions = {
 			httpOnly: true,
 			path: '/',
 			sameSite: 'lax',
-			secure: process.env.NODE_ENV === 'production',
+			secure: NODE_ENV === 'production',
 			maxAge: 60 * 60 // 1 hour
 		});
 

@@ -1,6 +1,6 @@
 // src/hooks.server.ts
 import type { Handle } from '@sveltejs/kit';
-import { env } from '$env/static/private';
+import { BACKEND_URL } from '$env/static/private';
 
 
 export const handle: Handle = async ({ event, resolve }) => {
@@ -30,7 +30,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
     // Store in locals for proxy route
     event.locals.forwardHeaders = forwardHeaders;
-	event.locals.djangoUrl = env.BACKEND_URL;
+	event.locals.djangoUrl = BACKEND_URL;
 
     console.log('hooks.server.ts Forwarded Headers:', forwardHeaders);
 

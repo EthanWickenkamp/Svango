@@ -1,8 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
-import { env } from '$env/static/private';
-
-const BACKEND_URL = env.BACKEND_URL;
+import { BACKEND_URL } from '$env/static/private';
 
 export async function authenticatedFetch(
     path: string,
