@@ -13,7 +13,7 @@
 		padding: 1.5rem;
 	}
 	h1 {
-		font-size: 1.75rem;
+		font-size: 4rem;
 		font-weight: 600;
 		margin-bottom: 1rem;
 	}

@@ -10,7 +10,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 		'X-Forwarded-Proto',
 		'X-Forwarded-Host',
 		'X-Forwarded-Server',
-		'User-Agent'
+		'User-Agent',
+        'Referer',
+	    'Origin',
 	];
 
 	const forwardHeaders: Record<string, string> = {};
