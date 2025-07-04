@@ -17,17 +17,10 @@ npm install
 echo "Syncing SvelteKit..."
 npm run prepare
 
-# Debug: Check project structure
-echo "Checking project structure..."
-ls -la src/
-ls -la src/routes/
-
-# Debug: Check if .svelte-kit was created properly
-echo "Checking .svelte-kit directory..."
-ls -la .svelte-kit/
-
 echo "Building for production..."
 npm run build
 
 echo "Starting production server..."
-exec HOST=$HOST PORT=$PORT node build
+export HOST=${HOST}
+export PORT=${PORT}
+exec node build
