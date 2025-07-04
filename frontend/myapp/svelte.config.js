@@ -1,28 +1,12 @@
 // svelte.config.js
-import adapter from '@sveltejs/adapter-node';  // Changed from adapter-auto
+import adapter from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
-
-// Build allowed origins from ALLOWED_HOSTS (HTTPS only for production)
-const buildAllowedOrigins = () => {
-	if (!process.env.ALLOWED_HOSTS) {
-		return [];
-	}
-	
-	const hosts = process.env.ALLOWED_HOSTS.split(',').map(h => h.trim());
-	return hosts.map(host => `https://${host}`);
-};
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	preprocess: [vitePreprocess()],
-
 	kit: {
 		adapter: adapter(),
-		
-		// CSRF Protection - Production ready
-		csrf: {
-			checkOrigin: process.env.NODE_ENV === 'production', // Always check origin in production
-		}
 	}
 };
 
