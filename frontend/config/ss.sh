@@ -30,4 +30,4 @@ echo "Building for production..."
 npm run build
 
 echo "Starting production server..."
-exec HOST=$FRONTEND_HOST PORT=$FRONTEND_PORT node build
+exec HOST=$HOST PORT=$PORT node build
