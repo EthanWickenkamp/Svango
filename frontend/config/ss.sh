@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e # exit on error
+set -e
 
 cd /app/myapp
 
@@ -21,4 +21,4 @@ echo "Building for production..."
 npm run build
 
 echo "Starting production server..."
-exec node build
+exec HOST=$FRONTEND_HOST PORT=$FRONTEND_PORT node build
