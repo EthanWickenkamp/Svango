@@ -11,3 +11,7 @@ const config = {
 };
 
 export default config;
+
+//using adapter-node to build a Node.js runtime application
+// Node environment like a docker container
+// Vite preprocess for TypeScript, PostCSS/SCSS, macros like $env
