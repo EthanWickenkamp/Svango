@@ -2,10 +2,10 @@ FROM node:18
 
 WORKDIR /app
 
-#copy package list and npm install
 COPY myapp/package*.json ./
-RUN npm install
+RUN npm ci
 
 COPY . .
 
-EXPOSE 5173
+RUN npm run prepare && npm run build
+RUN npm prune --omit=dev

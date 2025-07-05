@@ -83,7 +83,7 @@ services:
     working_dir: /app
 
     #run start script
-    command: bash config/ss.sh
+    command: node build
 
 #create a docker volume to store database static files, mounted above
 volumes: 
