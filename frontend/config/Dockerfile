@@ -5,7 +5,7 @@ WORKDIR /app
 COPY myapp/package*.json ./
 RUN npm ci
 
-COPY . .
+COPY myapp/. ./
 
 RUN npm run prepare && npm run build
 RUN npm prune --omit=dev
