@@ -20,19 +20,19 @@ def hello_world(request):
     return Response({"message": "Hello, API is working! :<"})
 
 # JWT authentication endpoint
-@api_view(['POST'])
-@permission_classes([AllowAny])
-def login(request):
-        username = request.data.get("username")
-        password = request.data.get("password")
+# @api_view(['POST'])
+# @permission_classes([AllowAny])
+# def login(request):
+#         username = request.data.get("username")
+#         password = request.data.get("password")
 
-        user = authenticate(username=username, password=password)
+#         user = authenticate(username=username, password=password)
 
-        if user is not None:
-            access = AccessToken.for_user(user)
-            return Response({"access": str(access)}, status=status.HTTP_200_OK)
-        else:
-            return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+#         if user is not None:
+#             access = AccessToken.for_user(user)
+#             return Response({"access": str(access)}, status=status.HTTP_200_OK)
+#         else:
+#             return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
         
 #returns user profile information
 @api_view(['GET'])
