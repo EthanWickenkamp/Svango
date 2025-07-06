@@ -1,9 +1,9 @@
 // src/hooks.server.ts
 import type { Handle } from '@sveltejs/kit';
-import { BACKEND_URL } from '$env/static/private';
 
-
+// grabs every request and runs handle function on the event
 export const handle: Handle = async ({ event, resolve }) => {
+	// list of headers
 	const headersToForward = [
 		'X-Real-IP',
 		'X-Forwarded-For',
@@ -17,6 +17,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const forwardHeaders: Record<string, string> = {};
 
+	// if there is a value for each header, add it to forwardHeaders
 	for (const header of headersToForward) {
 		const value = event.request.headers.get(header);
 		if (value) {
@@ -32,9 +33,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 
     // Store in locals for proxy route
     event.locals.forwardHeaders = forwardHeaders;
-	event.locals.djangoUrl = BACKEND_URL;
 
     console.log('hooks.server.ts Forwarded Headers:', forwardHeaders);
 
     return resolve(event);
+	//resolve means proceed
 };

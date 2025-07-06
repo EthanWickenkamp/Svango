@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-
 	/*  receive the user from +layout.server.ts  */
 	export let data;
 	const username = data.user?.username ?? '';

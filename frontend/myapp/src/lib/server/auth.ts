@@ -14,23 +14,23 @@ export async function authenticatedFetch(
         throw redirect(302, '/login');
     }
     
+    // create header with token first
     const headers = new Headers(options.headers);
     headers.set('Authorization', `Bearer ${token}`);
-
+    // attach the forwarded headers from hooks.server.ts
     for (const [key, value] of Object.entries(event.locals.forwardHeaders ?? {})) {
 	headers.set(key, value);
     }
-    
+    // set path after backend and checking slash
     const apiPath = path.startsWith('/') ? path : `/${path}`;
     const url = `${BACKEND_URL}${apiPath}`;
     
-    // make fetch with options and headers
+    // make fetch with options passed in function and set headers
     const response = await fetch(url, {
         ...options,
         headers
     });
     
-
     // Handle token expiration
     if (response.status === 401) {
         event.cookies.delete('access_token', { path: '/' });
