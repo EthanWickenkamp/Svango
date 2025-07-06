@@ -1,6 +1,6 @@
-import { redirect } from '@sveltejs/kit';
+import { redirect, fail } from '@sveltejs/kit';
 import type { RequestEvent } from '@sveltejs/kit';
-import { BACKEND_URL } from '$env/static/private';
+import { BACKEND_URL, NODE_ENV } from '$env/static/private';
 
 export async function authenticatedFetch(
     path: string,
@@ -38,4 +38,42 @@ export async function authenticatedFetch(
     }
     
     return response;
+}
+
+export async function login(
+    username: string,
+    password: string,
+    event: RequestEvent
+) {
+    // Backend login endpoint
+    const res = await fetch(`${BACKEND_URL}/api/token/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+    });
+
+    if (!res.ok) {
+        return fail(401, {
+            error: 'Invalid username or password',
+            values: { username }
+        });
+    }
+
+    const data = await res.json();
+
+    // Set secure cookie
+    event.cookies.set('access_token', data.access, {
+        httpOnly: true,
+        path: '/',
+        sameSite: 'lax',
+        secure: NODE_ENV === 'production',
+        maxAge: 60 * 60 // 1 hour
+    });
+
+    throw redirect(302, '/');
+}
+
+export async function logout(event: RequestEvent) {
+    event.cookies.delete('access_token', { path: '/' });   // clear JWT cookie
+    throw redirect(302, '/');                              // send user to homepage
 }

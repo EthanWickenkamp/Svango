@@ -1,6 +1,6 @@
-import { redirect } from '@sveltejs/kit';
+import { logout } from '$lib/server/auth';
+import type { PageServerLoad } from './$types';
 
-export async function load({ cookies }) {
-	cookies.delete('access_token', { path: '/' });   // clear JWT cookie
-	throw redirect(302, '/');                        // send user to homepage
-}
+export const load: PageServerLoad = async (event) => {
+    return await logout(event);
+};
