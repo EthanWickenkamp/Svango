@@ -66,10 +66,9 @@ export async function login(
         httpOnly: true,
         path: '/',
         sameSite: 'lax',
-        secure: NODE_ENV === 'production',
+        secure: NODE_ENV === 'production', //allows http on localhost
         maxAge: 60 * 60 // 1 hour
     });
-
     throw redirect(302, '/');
 }
 

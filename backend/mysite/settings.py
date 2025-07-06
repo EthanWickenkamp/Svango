@@ -130,14 +130,6 @@ CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS').split(',')
 CORS_ALLOW_HEADERS = list(default_headers) + [
     "authorization",
 ]
-CORS_ALLOW_METHODS = [  # defaults are usually fine
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-]
 CORS_ALLOW_CREDENTIALS = False  # Only True if using cookies
 
 
