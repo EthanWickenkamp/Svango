@@ -1,14 +1,9 @@
 # keeps host build files out of container, rebuild on start
 # Node artifacts
 myapp/node_modules/
-
 # Build output
 myapp/.svelte-kit/
 myapp/build/
 
 # Logs and environment
 *.log
-#**/.env*
-
-# Docs
-myapp/README.md

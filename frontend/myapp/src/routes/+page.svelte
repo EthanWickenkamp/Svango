@@ -22,7 +22,7 @@
 		color: #555;
 	}
 	a {
-		color: #1e40af;
+		color: #2e3144;
 		text-decoration: none;
 	}
 </style>
