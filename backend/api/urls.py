@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import hello_world, user_profile, login
+from .views import hello_world, user_profile
 from .views import ItemViewSet, ItemGroupViewSet
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView
