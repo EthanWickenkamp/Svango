@@ -20,6 +20,7 @@ Can drop .sql scripts in this folder, container will initialize with them from m
 mysite is the project, utilizing urls.py and settings.py
 
 api is an app in the project, utilizing models -> serializers -> views -> urls
+going from database object to an api endpoint
 
 ### Models
 create an object that will be created in the database, 
