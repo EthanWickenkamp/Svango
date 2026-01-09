@@ -133,6 +133,8 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 ]
 CORS_ALLOW_CREDENTIALS = False  # Only True if using cookies
 
+CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS").split(",")
+
 
 # REST Framework configuration
 REST_FRAMEWORK = {
