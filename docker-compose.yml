@@ -88,7 +88,7 @@ services:
 
     #ports mapped host:container
     ports:
-     - "3000:3000"
+     - "3000"
 
     #set working directory in container
     working_dir: /app
