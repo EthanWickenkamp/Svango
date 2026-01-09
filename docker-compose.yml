@@ -1,3 +1,7 @@
+networks:
+  web:
+    external: true
+
 services:
   db:
     container_name: mysql_db
@@ -7,7 +11,8 @@ services:
       dockerfile: config/Dockerfile
     #resilience for crashes 
     restart: always
-        
+    #define network for other containers
+    networks: [web]
     #mount database static files and init scripts
     volumes:
     - mysql_vol:/var/lib/mysql
@@ -20,6 +25,7 @@ services:
     #ports mapped host:container
     ports:
      - "3306"
+    
 
     #healthcheck
     healthcheck:
@@ -38,6 +44,9 @@ services:
 
     #mount local root directory to workspace folder
     #bad for production and not clean overrides COPY . . in dockerfile
+    
+    #define network for other containers
+    networks: [web]
     volumes:
     - ./backend/api/migrations:/app/api/migrations
      #- ./backend:/app
@@ -67,6 +76,8 @@ services:
       context: ./frontend
       dockerfile: config/Dockerfile
 
+    #define network for other containers
+    networks: [web]
     #mount local root directory to workspace folder
     #volumes: 
      #- ./frontend:/app
