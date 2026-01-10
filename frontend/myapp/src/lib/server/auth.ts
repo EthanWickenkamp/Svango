@@ -134,15 +134,23 @@ export async function logout(event: RequestEvent) {
     
     // Call blacklist API if we have a refresh token
     if (refreshToken) {
-        await fetch(`${BACKEND_URL}/api/token/blacklist/`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ refresh: refreshToken })
-        });
+        try {
+            await fetch(`${BACKEND_URL}/api/token/blacklist/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ refresh: refreshToken })
+            });
+            // Don't check response - just try to blacklist, but continue regardless
+        } catch (error) {
+            // Ignore blacklist errors - still logout on frontend
+            console.log('⚠️  Blacklist failed, but continuing logout');
+        }
     }
     
     // Clear both cookies
     event.cookies.delete('access_token', { path: '/' });
     event.cookies.delete('refresh_token', { path: '/' });
-    throw redirect(303, '/'); // Changed from 302
+    
+    console.log('🚪 Logged out, redirecting to /');
+    throw redirect(303, '/');
 }
