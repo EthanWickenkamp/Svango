@@ -8,8 +8,8 @@ const config = {
 	kit: {
 		adapter: adapter(),
 		csrf: {
-			checkOrigin: true,
-			allowedOrigins: process.env.ALLOWED_ORIGINS?.split(',') || []
+			checkOrigin: false,
+			//allowedOrigins: process.env.ALLOWED_ORIGINS?.split(',') || []
     	}
 	}
 };
