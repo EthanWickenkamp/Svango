@@ -1,17 +1,14 @@
 <script lang="ts">
-	/*  receive the user from +layout.server.ts  */
 	export let data;
 	const username = data.user?.username ?? '';
 
-	async function handleLogout() {
-		await fetch('/logout');          // hits the cookie-clearing route
-		window.location.href = '/';     // back to home
+	function handleLogout() {
+		// Just navigate to /logout, which will clear cookies and redirect
+		window.location.href = '/logout';
 	}
 </script>
 
-
 <nav>
-	<!--  UNCHANGED: your original list of links  -->
 	<div class="nav-left">
 		<ul>
 			<li><a href="/">Home</a></li>
@@ -21,7 +18,6 @@
 		</ul>
 	</div>
 
-	<!--  NEW block : appears at far right, but doesn’t disturb nav-left  -->
 	<div class="nav-right">
 		{#if username}
 			<span>Welcome, {username}</span>
