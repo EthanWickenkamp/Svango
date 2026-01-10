@@ -11,7 +11,7 @@ export async function authenticatedFetch(
     
     // cant go to page that calls authorized api fetch
     if (!token) {
-        throw redirect(303, '/login'); // Changed from 302
+        throw redirect(303, '/'); // Changed from 302
     }
     
     // create header with token first
