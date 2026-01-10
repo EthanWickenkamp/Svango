@@ -4,7 +4,7 @@ networks:
 
 services:
   db:
-    container_name: mysql_db
+    container_name: mysql
     #specify location of dockerfile and path context of container
     build: 
       context: ./db
@@ -36,7 +36,7 @@ services:
 
 
   backend:
-    container_name: django_backend
+    container_name: django
     #specify location of dockerfile and path context of container
     build: 
       context: ./backend
@@ -71,7 +71,7 @@ services:
     command: bash config/ss.sh
 
   frontend:
-    container_name: svelte_frontend
+    container_name: svelte
     build:
       context: ./frontend
       dockerfile: config/Dockerfile

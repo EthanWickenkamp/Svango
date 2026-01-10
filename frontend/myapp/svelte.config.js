@@ -7,10 +7,6 @@ const config = {
 	preprocess: [vitePreprocess()],
 	kit: {
 		adapter: adapter(),
-		csrf: {
-			checkOrigin: false,
-			//allowedOrigins: process.env.ALLOWED_ORIGINS?.split(',') || []
-    	}
 	}
 };
 
