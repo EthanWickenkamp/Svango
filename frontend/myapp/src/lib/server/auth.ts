@@ -135,7 +135,7 @@ export async function logout(event: RequestEvent) {
     // Call blacklist API if we have a refresh token
     if (refreshToken) {
         try {
-            await fetch(`${BACKEND_URL}/api/token/blacklist/`, {
+            await authenticatedFetch(`${BACKEND_URL}/api/token/blacklist/`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ refresh: refreshToken })
