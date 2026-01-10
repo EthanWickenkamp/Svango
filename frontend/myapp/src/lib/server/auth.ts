@@ -93,14 +93,23 @@ export async function login(
     password: string,
     event: RequestEvent
 ) {
-    // Backend login endpoint
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log('🔐 LOGIN FUNCTION START');
+    console.log('   Username:', username);
+    console.log('   NODE_ENV:', NODE_ENV);
+    console.log('   BACKEND_URL:', BACKEND_URL);
+    
     const res = await fetch(`${BACKEND_URL}/api/token/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
     });
 
+    console.log('   Django response status:', res.status);
+
     if (!res.ok) {
+        console.log('❌ LOGIN FAILED');
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
         return fail(401, {
             error: 'Invalid username or password',
             values: { username }
@@ -108,6 +117,9 @@ export async function login(
     }
 
     const data = await res.json();
+    console.log('✅ Got tokens from Django');
+    console.log('   Access token length:', data.access?.length);
+    console.log('   Refresh token length:', data.refresh?.length);
 
     // Set secure cookies for both tokens
     event.cookies.set('access_token', data.access, {
@@ -115,7 +127,7 @@ export async function login(
         path: '/',
         sameSite: 'lax',
         secure: NODE_ENV === 'production',
-        maxAge: 60 * 60 // 1 hour
+        maxAge: 60 * 60
     });
     
     event.cookies.set('refresh_token', data.refresh, {
@@ -123,10 +135,19 @@ export async function login(
         path: '/',
         sameSite: 'lax',
         secure: NODE_ENV === 'production',
-        maxAge: 24 * 60 * 60 // 1 day
+        maxAge: 24 * 60 * 60
     });
 
-    throw redirect(303, '/'); // Changed from 302
+    console.log('🍪 Cookies set with options:', {
+        httpOnly: true,
+        path: '/',
+        sameSite: 'lax',
+        secure: NODE_ENV === 'production',
+    });
+    console.log('🔄 Throwing redirect to /');
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+
+    throw redirect(303, '/');
 }
 
 export async function logout(event: RequestEvent) {
