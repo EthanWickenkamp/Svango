@@ -26,7 +26,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG').lower() in ('true', '1', 't')
 
 # In Docker, you might pass ALLOWED_HOSTS as a comma-separated list.
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
+#ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
+ALLOWED_HOSTS=*
 
 # Application definition
 
