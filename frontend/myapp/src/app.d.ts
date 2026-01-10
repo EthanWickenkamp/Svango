@@ -7,6 +7,14 @@ declare global {
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}
+		interface Locals {
+			accessToken?: string;
+			isAuthenticated: boolean;
+			forwardHeaders?: Record<string, string>;
+		}
+		interface PageData {
+			isAuthenticated?: boolean;
+		}
 	}
 }
 

@@ -11,7 +11,7 @@ export async function authenticatedFetch(
     
     // cant go to page that calls authorized api fetch
     if (!token) {
-        throw redirect(302, '/login');
+        throw redirect(303, '/login'); // Changed from 302
     }
     
     // create header with token first
@@ -46,7 +46,7 @@ export async function authenticatedFetch(
             // Refresh failed, redirect to login
             event.cookies.delete('access_token', { path: '/' });
             event.cookies.delete('refresh_token', { path: '/' });
-            throw redirect(302, '/login');
+            throw redirect(303, '/login'); // Changed from 302
         }
     }
     
@@ -126,7 +126,7 @@ export async function login(
         maxAge: 24 * 60 * 60 // 1 day
     });
 
-    throw redirect(302, '/');
+    throw redirect(303, '/'); // Changed from 302
 }
 
 export async function logout(event: RequestEvent) {
@@ -144,5 +144,5 @@ export async function logout(event: RequestEvent) {
     // Clear both cookies
     event.cookies.delete('access_token', { path: '/' });
     event.cookies.delete('refresh_token', { path: '/' });
-    throw redirect(302, '/');
+    throw redirect(303, '/'); // Changed from 302
 }
