@@ -41,6 +41,7 @@ services:
     build: 
       context: ./backend
       dockerfile: config/Dockerfile
+    restart: unless-stopped
 
     #mount local root directory to workspace folder
     #bad for production and not clean overrides COPY . . in dockerfile
@@ -75,6 +76,7 @@ services:
     build:
       context: ./frontend
       dockerfile: config/Dockerfile
+    restart: unless-stopped
 
     #define network for other containers
     networks: [web]
